@@ -2,7 +2,6 @@
  *
  * @author alebar
  */
-import geom.Polyhedron;
 import gui.*;
 import math.*;
 import vertexfinder.*;
@@ -17,11 +16,14 @@ public class Main {
         IManagement manager = new Zarzadca();
         IMovement move = new Ruch3D(manager);
 
-        double[][] a = {    { 1, 1, 1 },
-                            { -1, 0, 0 },
+        double[][] a = {    { 0, 0, 1 },
+                            { 0, 0, -1 },
+                            { 0, 1, 0 },
                             { 0, -1, 0 },
-                            { 0, 0, -1 },};
-        double [] b_tab = { 1000, 0, 0, 0 };
+                            { 1, 0, 0 },
+                            { -1, 0, 0 },
+                            { 0, 1, 1 } };
+        double [] b_tab = { 100, 0, 100, 0, 100, 0, 100 };
         Matrix A = new Matrix (a);
         Vector b = new Vector(b_tab);
         IVertex ver = new Solver3D();
