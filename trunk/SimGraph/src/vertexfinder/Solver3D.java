@@ -36,7 +36,7 @@ public class Solver3D implements IVertex {
         if (A == null)
             throw new java.lang.NullPointerException("wywolaj najpierw setSystem");
 
-        Polygon[] polygons = polygonsInitialize(m);
+        Polygon3D[] polygons = polygonsInitialize(m);
         Point3D punkt;
         /* Iterujemy po rownaniach w ukladzie. Dla dwoch ostatnich rownan
          * nie potrzebujemy juz iteracji: ich punkty przeciec z innymi
@@ -57,13 +57,15 @@ public class Solver3D implements IVertex {
                 }
             }
         }
-        return new Polyhedron(polygons);
+        Polyhedron w = new Polyhedron(polygons);
+        // w.napraw();
+        return w;
     }
 
-    private Polygon[] polygonsInitialize (int m) {
-        Polygon [] p = new Polygon[m];
+    private Polygon3D[] polygonsInitialize (int m) {
+        Polygon3D [] p = new Polygon3D[m];
         for (int i=0; i<m; i++) {
-            p[i] = new Polygon();
+            p[i] = new Polygon3D();
         }
         return p;
     }
