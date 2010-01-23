@@ -73,9 +73,9 @@ public class GUI implements KeyListener, IGui {
         if (e.getKeyCode()==KeyEvent.VK_DOWN)
             ster.rotateXDown();
         if (e.getKeyCode()==KeyEvent.VK_RIGHT)
-            ster.rotateYRight();
+            ster.rotateZRight();
         if (e.getKeyCode()==KeyEvent.VK_LEFT)
-            ster.rotateYLeft();
+            ster.rotateZLeft();
         if (e.getKeyCode() == 'Q' || e.getKeyCode() == 'q')
             ster.rotateYLeft();
         if (e.getKeyCode() == 'E' || e.getKeyCode() == 'e')

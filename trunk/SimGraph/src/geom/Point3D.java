@@ -171,4 +171,7 @@ public class Point3D extends Vector {
             return false;
         }
     }
+    public String printPoint(){
+        return "punkt: x:"+getX()+" y:"+getY()+" z:"+getZ() ;
+    }
 }

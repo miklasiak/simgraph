@@ -19,7 +19,7 @@ public class PolygonTest {
         Polygon3D poly = new Polygon3D();
         poly.addPoint(a);
         poly.addPointNoRep(b);
-        assertEquals(true, poly.hasIt(a));
+        assertEquals(true, poly.hasPoint(a));
         //assertEquals(1, poly.numOfPoints());
     }
 

@@ -1,4 +1,4 @@
-package geom;
+    package geom;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,14 +30,17 @@ public class Polygon3D implements Iterable {
         return punkty.size();
     }
 
-    public boolean hasIt (Point3D p) {
+    public boolean hasPoint (Point3D p){
         return punkty.contains(p);
+    }
+
+    public void setlist(ArrayList<Point3D> pl){
+        punkty = pl;
     }
 
     public Point3D getPoint (int i) {
         return punkty.get(i);
     }
-
 
     public Iterator iterator() {
         return new MyIterator();

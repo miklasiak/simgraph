@@ -1,4 +1,6 @@
 package vertexfinder;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import math.*;
 import geom.*;
 import org.apache.commons.math.linear.*;
@@ -58,7 +60,11 @@ public class Solver3D implements IVertex {
             }
         }
         Polyhedron w = new Polyhedron(polygons);
-        // w.napraw();
+        try {
+            w.repair();
+        } catch (Exception ex) {
+            Logger.getLogger(Solver3D.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return w;
     }
 
