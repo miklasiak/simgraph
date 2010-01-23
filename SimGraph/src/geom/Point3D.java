@@ -18,6 +18,7 @@ public class Point3D extends Vector {
         this.setX(0);
         this.setY(0);
         this.setZ(0);
+        this.setN(1);
     }
 
     public Point3D (double x, double y, double z) {
@@ -25,6 +26,7 @@ public class Point3D extends Vector {
         this.setX(x);
         this.setY(y);
         this.setZ(z);
+        this.setN(1);
     }
 
     public Point3D (double x, double y, double z, double n) {
@@ -53,6 +55,18 @@ public class Point3D extends Vector {
             }
         }
         this.setTab(tmp);
+    }
+    
+    public static Point3D multiply (Point3D p, Matrix M) {
+        Point3D x = new Point3D();
+        double[][] m = M.getTab();
+        for (int w=0; w<4; w++) {
+            x.setElement(w, 0.0);
+            for (int k=0; k<4; k++) {
+                x.setElement(w, x.getElement(w)+m[w][k]*p.getElement(k));
+            }
+        }
+        return x;
     }
 
     /**

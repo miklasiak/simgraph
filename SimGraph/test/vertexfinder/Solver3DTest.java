@@ -35,7 +35,8 @@ public class Solver3DTest {
         IVertex ver = new Solver3D();
         ver.setSystem(A, b);
         p = ver.vertexFind();
-        assertEquals(6, p.getNumOfWalls());
+        p.print();
+        assertEquals(6, p.numOfWalls());
     }
 
     @Test
@@ -54,7 +55,25 @@ public class Solver3DTest {
         IVertex ver = new Solver3D();
         ver.setSystem(A, b);
         p = ver.vertexFind();
-        assertEquals(5, p.getNumOfWalls());
+        p.print();
+        assertEquals(5, p.numOfWalls());
+    }
+
+    @Test
+    public void vertexFindTest3 () {
+        Polyhedron p;
+        double[][] a = {    { 1, 1, 1 },
+                            { -1, 0, 0 },
+                            { 0, -1, 0 },
+                            { 0, 0, -1 },};
+        double [] b_tab = { 10, 0, 0, 0 };
+        Matrix A = new Matrix (a);
+        Vector b = new Vector(b_tab);
+        IVertex ver = new Solver3D();
+        ver.setSystem(A, b);
+        p = ver.vertexFind();
+        p.print();
+        assertEquals(4, p.numOfWalls());
     }
 
     private double dwumianNewtona (int n, int k) {

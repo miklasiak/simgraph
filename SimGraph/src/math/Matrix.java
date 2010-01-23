@@ -33,9 +33,27 @@ public class Matrix implements Cloneable {
      * @param y ilosc kolumn
      */
     public Matrix (int x, int y) {
+        if (x<=0 || y<=0)
+            throw new java.lang.IllegalArgumentException("wymiary macierzy nie moga byc <= zero");
         this.matrix = new double[x][y];
         this.r = x;
         this.c = y;
+    }
+
+    public Matrix (int x, int y, char a) {
+        if (x!=y)
+            throw new java.lang.IllegalArgumentException("zle wymiary macierzy: macierz musi byc kwadratowa");
+        if (a == 'I') {
+            this.matrix = new double[x][y];
+            this.r = x;
+            this.c = y;
+            for (int i=0; i<r; i++) {
+                for (int j=0; j<c; j++) {
+                    if (j==i)   matrix[i][j] = 1;
+                    else        matrix[i][j] = 0;
+                }
+            }
+        }
     }
 
     /**
@@ -50,7 +68,36 @@ public class Matrix implements Cloneable {
         }
         return new Vector (v);
     }
-    
+
+    public static Matrix multiple (Matrix A, Matrix B) {
+        if (A.getNumOfRows()!=4 || A.getNumOfcolumns()!=4 || B.getNumOfRows()!=4 || B.getNumOfcolumns()!=4)
+            throw new java.lang.UnsupportedOperationException("mnożenie macierzy działa tyko dla dwóch macierzy 4x4");
+        double[][] x = new double[4][4];
+        double[][] a = A.getTab();
+        double[][] b = B.getTab();
+        for (int w=0; w<4; w++) { // dla każdego wiersza macierzy y
+            for (int k=0; k<4; k++) { // dla każdej kolumny macierzy m
+                x[w][k] = a[w][0]*b[0][k]+a[w][1]*b[1][k]+a[w][2]*b[2][k]+a[w][3]*b[3][k];
+            }
+        }
+        return new Matrix(x);
+    }
+
+    public void multiple (Matrix p) {
+        // matrix musi byc po prawej stronie mnozenia, czyli y*matrix=x
+        // x to bedzie macierz wynikowa
+        if (r!=4 || c!=4 || p.getNumOfRows()!=4 || p.getNumOfcolumns()!=4)
+            throw new java.lang.UnsupportedOperationException("mnożenie macierzy działa tyko dla dwóch macierzy 4x4");
+        double[][] x = new double[4][4];
+        double[][] y = p.getTab();
+        for (int w=0; w<4; w++) { // dla każdego wiersza macierzy y
+            for (int k=0; k<4; k++) { // dla każdej kolumny macierzy m
+                x[w][k] = y[w][0]*matrix[0][k]+y[w][1]*matrix[1][k]+y[w][2]*matrix[2][k]+y[w][3]*matrix[3][k];
+            }
+        }
+        matrix = x.clone();
+    }
+
     /**
      * Macierz B dokleja do macierzy A z jej prawej strony
      * @param A
