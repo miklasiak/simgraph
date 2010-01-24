@@ -7,7 +7,7 @@ import math.*;
  */
 public class Ruch3D implements IMovement {
 
-    private double tStep = 100.0;                   // krok przesuniecia w translacji
+    private double tStep = 5.0;                   // krok przesuniecia w translacji
     private double dStep = 10.0;                    // krok przesuniecia ogniskowej
     private double rStep = 0.1;                     // jednostka obrotu
     private Double[] v;                             // wektor translacji
@@ -20,11 +20,11 @@ public class Ruch3D implements IMovement {
     private Matrix rZright = new Matrix(4,4,'I');   // macierz obrotu wokol OZ w prawo
     private Matrix rZleft = new Matrix(4,4,'I');    // macierz obrotu wokol OZ w lewo
 
-    private IManagement zarzadca;
+    private Zarzadca zarzadca;
 
 
     public Ruch3D (IManagement z) {
-        zarzadca = z;
+        zarzadca = (Zarzadca) z;
         zarzadca.setMatrixes(T, R);
         double cam_y = zarzadca.getCameraY();
         rXdown  = Ruch3D.makeRotationXMatrix(rStep, cam_y);

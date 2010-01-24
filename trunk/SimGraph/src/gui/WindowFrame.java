@@ -50,5 +50,9 @@ public class WindowFrame extends JFrame {
         pane.add(menuPanel);
 
     }
+    public void addDrawingPanel (JPanel drawingPanel) {
+        this.getContentPane().add(drawingPanel);
+        this.getContentPane().add(this.menuPanel);
+    }
 
 }

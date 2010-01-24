@@ -41,9 +41,18 @@ public class DrawingPanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(Color.WHITE);
+        Color[] tab = new Color[5];
+        tab[0] = Color.BLUE;
+        tab[1] = Color.CYAN;
+        tab[2] = Color.GREEN;
+        tab[3] = Color.MAGENTA;
+        tab[4] = Color.YELLOW;
+        int i = 0;
         polygons = zarzadca.getZrzutowane();
         for (Polygon p : polygons) {
+            g.setColor(tab[i]);
             g.drawPolygon(p);
+            i++;
         }
     }
 
