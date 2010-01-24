@@ -15,24 +15,27 @@ public class GUI implements KeyListener, IGui {
     private IMovement ster;
     private IManagement zarzadca;
 
-    public GUI ( IMovement im, IManagement zarzadca ) {
+    public GUI () { }
+
+    public GUI ( IMovement im, IManagement z ) {
         ster = im;
-        panel = new DrawingPanel(PANEL_HEIGHT, PANEL_WIDTH, zarzadca);
-        frame = new WindowFrame(panel, this);
-        frame.setVisible(true);
+        zarzadca = z;
     }
 
     public void setIMovementInterface (IMovement im) {
         ster = im;
     }
 
-    public void setIManagementInterface (IManagement im) {
-        zarzadca = im;
+    public void setIManagementInterface (IManagement z) {
+        zarzadca = z;
     }
 
-    public void showDrawingPanel () {
+    public void show () {
+        if (ster==null || zarzadca==null)
+            throw new java.lang.IllegalStateException("najpierw ustaw interfejsy");
         panel = new DrawingPanel(PANEL_HEIGHT, PANEL_WIDTH, zarzadca);
-
+        frame = new WindowFrame(panel, this);
+        frame.setVisible(true);
     }
 
     /**

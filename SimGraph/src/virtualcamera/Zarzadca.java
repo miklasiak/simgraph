@@ -115,13 +115,13 @@ public class Zarzadca implements IManagement {
         return zrzutowane;
     }
 
-    public double getCameraY() {
+    protected double getCameraY() {
         return cam.getY();
     }
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc=" setters">
-    public void setMatrixes (Matrix t, Matrix r) {
+    protected void setMatrixes (Matrix t, Matrix r) {
         T = t;
         R = r;
     }

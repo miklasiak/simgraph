@@ -15,25 +15,27 @@ public class Main {
     public static void main(String[] args) {
         IManagement manager = new Zarzadca();
         IMovement move = new Ruch3D(manager);
+        IVertex vertex = new Solver3D();
+        IGui gui = new GUI();
+
+        gui.setIManagementInterface(manager);
+        gui.setIMovementInterface(move);
+
+        manager.setGuiInterface(gui);
 
         double[][] a = {    { 0, 0, 1 },
-                            { 0, 0, -1 },
-                            { 0, 1, 0 },
-                            { 0, -1, 0 },
-                            { 1, 0, 0 },
-                            { -1, 0, 0 },
-                            { 0, 1, 1 } };
-        double [] b_tab = { 100, 0, 100, 0, 100, 0, 100 };
-        Matrix A = new Matrix (a);
-        Vector b = new Vector(b_tab);
-        IVertex ver = new Solver3D();
-        ver.setSystem(A, b);
-        manager.setVertex(ver.vertexFind());
-        IGui gui = new GUI(move, manager);
-        manager.setGuiInterface(gui);
+        { 0, 0, -1 },
+        { 0, 1, 0 },
+        { 0, -1, 0 },
+        { 1, 0, 0 },
+        { -1, 0, 0 },
+        { 0, 1, 1 } };
+        double [] b = { 100, 0, 100, 0, 100, 0, 100 };
+        vertex.setSystem(new Matrix(a), new Vector(b));
+        manager.setVertex(vertex.vertexFind());
         
+        gui.show();
         manager.start();
-
     }
 
 }
