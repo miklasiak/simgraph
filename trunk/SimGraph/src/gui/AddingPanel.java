@@ -144,8 +144,9 @@ public class AddingPanel extends JPanel {
         
         ta.setBounds(0, 0, subPanel.getWidth(), subPanel.getHeight());
         ta.setBackground(Color.white);
+        ta.setEditable(false);
         sp = new JScrollPane(ta);
-        sp.setBackground(Color.yellow);
+        sp.setBackground(Color.white);
         //sp.setBounds(0, 0, subPanel.getWidth(), subPanel.getHeight());
         subPanel.add(sp);
         
@@ -156,7 +157,7 @@ public class AddingPanel extends JPanel {
         btnStart.setBounds(leftMargin, nextHeight(subPanel), widthOfBtns, high);
         btnStart.addMouseListener(ml);
         add(btnStart);
-        setBackground(Color.BLUE);
+        setBackground(Color.white);
     }
     
 
