@@ -14,16 +14,16 @@ public class WindowFrame extends JFrame {
 
     private AddingPanel addingPanel;
     private DrawingPanel drawingPanel;
-    private boolean focusOnAddingPanel = false;
+    private boolean focusOnAddingPanel = true;
 
     public WindowFrame (DrawingPanel drawPan, GUI keyList) {
-        this.addKeyListener(keyList);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.setLocation(X_WINDOW_LOCATION, Y_WINDOW_LOCATION);
         this.setPreferredSize(new Dimension(840, 500));
 
         this.drawingPanel = drawPan;
+        this.drawingPanel.addKeyListener(keyList);
         addComponents();
         pack();
     }
@@ -45,7 +45,6 @@ public class WindowFrame extends JFrame {
     }
 
     public void toggleFocusable() {
-        System.out.print(focusOnAddingPanel + "-> ");
         if (focusOnAddingPanel) {
             addingPanel.setFocus(false);
             drawingPanel.setFocusable(true);
@@ -55,7 +54,6 @@ public class WindowFrame extends JFrame {
             drawingPanel.setFocusable(false);
             focusOnAddingPanel = true;
         }
-        System.out.print(focusOnAddingPanel);
     }
 
 }
