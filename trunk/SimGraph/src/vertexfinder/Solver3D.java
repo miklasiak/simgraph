@@ -1,8 +1,11 @@
 package vertexfinder;
+import file.IData;
+import file.MyReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import math.*;
 import geom.*;
+import java.io.IOException;
 import org.apache.commons.math.linear.*;
 
 /**
@@ -14,9 +17,12 @@ public class Solver3D implements IVertex {
     Vector              b;
     int                 m;      // liczba nierownosci (plaszczyzn)
     int                 n;      // wymiar przestrzeni
+    IData           reader;
+    boolean alreadyReaded=false;
 
     public Solver3D () {
         n = 3;
+        reader = new MyReader();
     }
 
     public void setSystem(Matrix mA, Vector vb) {
@@ -30,8 +36,27 @@ public class Solver3D implements IVertex {
         this.b = new Vector (vb.getTab());
     }
 
+    /**
+     *
+     * @param filename
+     * czyta macierze z pliku i wczytuje do systemu pierwszą przeczytaną macierz
+     */
     public void setSystemFromFile(String filename) {
-        throw new UnsupportedOperationException("Not supported yet.");
+            try{
+                reader.readFile(filename);
+                alreadyReaded = true;
+            }catch(IOException ioe){
+                alreadyReaded = false;
+                return;
+            }
+            setNextSystem();
+    }
+    /**
+     * jeśli przeczytano macierze z pliku to tą metodą przechodzimy do następnej przeczytanej macierzy
+     */
+    public void setNextSystem(){
+        if(alreadyReaded && reader.hasNextA() && reader.hasNexb())
+            setSystem(reader.getNextA(), reader.getNextb());
     }
 
     public Polyhedron vertexFind() {
