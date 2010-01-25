@@ -35,7 +35,7 @@ public class Main {
         getManager().setVertex(ver.vertexFind());
         IGui gui = new GUI(move,getManager());
         getManager().setGuiInterface(gui);
-
+        gui.show();
         getManager().start();
 
     }
