@@ -261,4 +261,15 @@ public class Matrix implements Cloneable {
         }
         System.out.println();
     }
+
+    public void makeMeI () {
+        if (r!=c)
+            throw new java.lang.IllegalStateException("nie mozesz zrobic macierzy I z macierzy niekwadratowej");
+        for (int i=0; i< r; i++) {
+            for (int j=0; j<c; j++) {
+                if ( i==j ) this.matrix[i][j] = 1;
+                else this.matrix[i][j] = 0;
+            }
+        }
+    }
 }

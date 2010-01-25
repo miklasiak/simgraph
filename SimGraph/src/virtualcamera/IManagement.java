@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public interface IManagement {
     public void setVertex (Polyhedron p);
     public void start();
-    public ArrayList<Polygon> getZrzutowane();
+    public ArrayList<Polygon> getRysowanyObiekt();
+    public ArrayList<Polygon> getOsie();
     public void setGuiInterface(IGui gui);
 }

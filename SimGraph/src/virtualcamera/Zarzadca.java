@@ -17,13 +17,15 @@ import java.util.TimerTask;
  */
 public class Zarzadca implements IManagement {
     private Polyhedron wieloscian;
-    private ArrayList<Polygon> zrzutowane;
+    private Osie osie;
+    private ArrayList<Polygon> zrzutowane, zrzutowaneOsie;
+
 
     private IGui gui;
 
     private Matrix T;
     private Matrix R;
-    private Matrix M;
+    private Matrix M = new Matrix (4,4,'I');
 
     private Camera cam;
     private int xd, zd;
@@ -34,10 +36,11 @@ public class Zarzadca implements IManagement {
         cam = new Camera( 300.0, 0.0);
         timer = new Timer();
         zrzutowane = new ArrayList<Polygon>();
+        osie = new Osie();
     }
 
-    private void rzutuj ( Polyhedron polyhedron ) {
-        zrzutowane.clear();
+    private ArrayList<Polygon> rzutuj ( Polyhedron polyhedron ) {
+        ArrayList<Polygon> wynik = new ArrayList<Polygon>();
         Polygon polygon;
         Polygon3D wall;
         Point3D point;
@@ -69,8 +72,9 @@ public class Zarzadca implements IManagement {
                 p2d = rzucPrzeciecie( wall.getPoint(0), wall.getPoint(wall.numOfPoints()-1) );
                 polygon.addPoint(p2d.getX(),p2d.getY());
             }
-            zrzutowane.add(polygon);
+            wynik.add(polygon);
         }
+        return wynik;
     }
 
     /**
@@ -87,13 +91,13 @@ public class Zarzadca implements IManagement {
         double yc = cam.getVPD() + cam.getY();
         double k = (yc - a.getY()) / ( b.getY() - a.getY() );
         if (a.getX() != b.getX()) {
-            x = (int) (k * ( b.getX() - a.getX() ) + a.getX());
+            x = (int)(k * ( b.getX() - a.getX() ) + a.getX()) + xd;
         } else
-            x = (int) a.getX();
+            x = (int) a.getX() + xd;
         if (a.getZ() != b.getZ()) {
-            z = (int) (k * ( b.getZ() - a.getZ() ) + a.getZ());
+            z = zd - (int)(k * ( b.getZ() - a.getZ() ) + a.getZ());
         } else
-            z = (int) a.getZ();
+            z = zd - (int) a.getZ();
         return new Point2D(x,z);
     }
 
@@ -111,8 +115,12 @@ public class Zarzadca implements IManagement {
     }
 
     //<editor-fold defaultstate="collapsed" desc=" getters">
-    public ArrayList<Polygon> getZrzutowane() {
+    public ArrayList<Polygon> getRysowanyObiekt() {
         return zrzutowane;
+    }
+
+    public ArrayList<Polygon> getOsie() {
+        return zrzutowaneOsie;
     }
 
     protected double getCameraY() {
@@ -134,7 +142,8 @@ public class Zarzadca implements IManagement {
 
     public void setVertex(Polyhedron p) {
         wieloscian = p;
-        rzutuj( Polyhedron.multiplyPoints(wieloscian, new Matrix(4,4,'I')) );
+        zrzutowane = rzutuj( wieloscian );
+        zrzutowaneOsie = rzutuj( osie );
     }
 
     public void setGuiInterface (IGui ig) {
@@ -149,8 +158,15 @@ public class Zarzadca implements IManagement {
         @Override
         public void run() {
             if (changed) {
-                M= Matrix.multiple(R,T);
-                rzutuj( Polyhedron.multiplyPoints(wieloscian, M) );
+                M.multiple(R);
+                M.multiple(T);
+                
+                zrzutowaneOsie = rzutuj( Polyhedron.multiplyPoints(osie, M) );
+                zrzutowane = rzutuj( Polyhedron.multiplyPoints(wieloscian, M) );
+                
+                T.makeMeI();
+                R.makeMeI();
+
                 gui.reload();
                 changed = false;
             }
