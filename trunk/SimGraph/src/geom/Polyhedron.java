@@ -57,6 +57,16 @@ public class Polyhedron implements Iterable {
         return new Polyhedron(listaPolygonow);
     }
 
+    public void multiplyPoints (Matrix M) {
+        Point3D point;
+        for (Polygon3D wall : walls) {
+            for (Object o : wall) {
+                point = (Point3D) o;
+                point.multiply(M);
+            }
+        }
+    }
+
     public void addWall (Polygon3D p) {
         this.walls.add(p);
     }

@@ -13,6 +13,8 @@ import virtualcamera.IManagement;
 public class DrawingPanel extends JPanel {
     private IManagement zarzadca;
     private ArrayList<Polygon> polygons;
+    private Color [] c;
+    private int i;
 
     /**
      * Konstruktor tworzy obiekt klasy DrawingPanel. Ustawia odpowiedni rozmiar, kolor tła.
@@ -25,10 +27,16 @@ public class DrawingPanel extends JPanel {
         //this.addMouseListener(mouseList);
         zarzadca = zarz;
         Dimension d = new Dimension(rz_w, rz_h);
+        this.setSize(d);
         this.setMinimumSize(d);
         this.setPreferredSize(d);
         this.setMaximumSize(d);
-        
+
+        c = new Color[3];
+        c[0] = Color.red;
+        c[1] = Color.green;
+        c[2] = Color.blue;
+
         this.setBackground(Color.BLACK);
     }
 
@@ -40,17 +48,19 @@ public class DrawingPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.WHITE);
-        Color[] tab = new Color[5];
-        tab[0] = Color.BLUE;
-        tab[1] = Color.CYAN;
-        tab[2] = Color.GREEN;
-        tab[3] = Color.MAGENTA;
-        tab[4] = Color.YELLOW;
-        int i = 0;
-        polygons = zarzadca.getZrzutowane();
+        // show obiekt
+        polygons = zarzadca.getRysowanyObiekt();
         for (Polygon p : polygons) {
-            g.setColor(tab[i]);
+            g.setColor(Color.lightGray);
+            g.fillPolygon(p);
+            g.setColor(Color.white);
+            g.drawPolygon(p);
+        }
+        // show osie
+        polygons = zarzadca.getOsie();
+        i = 0;
+        for (Polygon p : polygons) {
+            g.setColor(c[i]);
             g.drawPolygon(p);
             i++;
         }

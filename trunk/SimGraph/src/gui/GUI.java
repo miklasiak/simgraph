@@ -83,6 +83,8 @@ public class GUI implements KeyListener, IGui {
             ster.rotateYLeft();
         if (e.getKeyCode() == 'E' || e.getKeyCode() == 'e')
             ster.rotateYRight();
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+            frame.toggleFocusable();
 
         // zoom
         if (e.getKeyChar() == ']')

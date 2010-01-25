@@ -1,6 +1,8 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import javax.swing.*;
 /**
  *
@@ -10,49 +12,50 @@ public class WindowFrame extends JFrame {
     private final int X_WINDOW_LOCATION = 300;
     private final int Y_WINDOW_LOCATION = 100;
 
-    private JPanel menuPanel = new JPanel();
-    private JTextArea textArea = new JTextArea();
+    private AddingPanel addingPanel;
+    private DrawingPanel drawingPanel;
+    private boolean focusOnAddingPanel = false;
 
-    public WindowFrame (JPanel drawingPanel, GUI keyList) {
+    public WindowFrame (DrawingPanel drawPan, GUI keyList) {
         this.addKeyListener(keyList);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.setLocation(X_WINDOW_LOCATION, Y_WINDOW_LOCATION);
+        this.setPreferredSize(new Dimension(840, 500));
 
-        addComponents(this.getContentPane(), drawingPanel);
+        this.drawingPanel = drawPan;
+        addComponents();
         pack();
     }
 
-    private void addComponents(Container pane, JPanel drawingPanel) {
-
+    private void addComponents() {
+        Container pane = this.getContentPane();
         pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
 
         drawingPanel.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+        drawingPanel.setFocusable(!focusOnAddingPanel);
         pane.add(drawingPanel);
 
-        textArea.setText("Wirtualna Kamera\n\n" +
-                "Autor: Aleksander Bartnikiewicz\n"+
-                "\nRuch:\n" +
-                    "prawo/lewo\tD/A\n" +
-                    "gora/dol\tR/F\n" +
-                    "przod/tyl\tW/S\n" +
-                "\nObroty: \n" +
-                    "OX\t   up/down\n" +
-                    "OZ\t   right/left\n" +
-                    "OY\t   Q/E\n" +
-                "\nZoom:\n" +
-                    "ZoomIn\t   ]\n" +
-                    "ZoomOut\t  [");
-        textArea.setEditable(false);
-        textArea.setFocusable(false);
-        this.menuPanel.setSize(430, 500);
-        this.menuPanel.add(textArea);
-        pane.add(menuPanel);
-
+        addingPanel = new AddingPanel(this);
+        addingPanel.setBounds(0, 0, 300, 400);
+        addingPanel.setBackground(Color.BLACK);
+        addingPanel.fillComponents();
+        addingPanel.setFocus(focusOnAddingPanel);
+        pane.add(addingPanel);
     }
-    public void addDrawingPanel (JPanel drawingPanel) {
-        this.getContentPane().add(drawingPanel);
-        this.getContentPane().add(this.menuPanel);
+
+    public void toggleFocusable() {
+        System.out.print(focusOnAddingPanel + "-> ");
+        if (focusOnAddingPanel) {
+            addingPanel.setFocus(false);
+            drawingPanel.setFocusable(true);
+            focusOnAddingPanel = false;
+        } else {
+            addingPanel.setFocus(true);
+            drawingPanel.setFocusable(false);
+            focusOnAddingPanel = true;
+        }
+        System.out.print(focusOnAddingPanel);
     }
 
 }
