@@ -5,6 +5,7 @@
 
 package gui;
 
+import geom.Polyhedron;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -39,7 +40,7 @@ public class AddingPanel extends JPanel {
     JTextArea ta;
     JScrollPane sp;
     JPanel subPanel;
-    WindowFrame parent;
+    Window parent;
     int topMargin=10,leftMargin=10,high=20;
     int hm=10,wm=1,widthOfBtns=160,bottomMargin=10;
     int tfXWidth=30,lblXWidth=27;
@@ -49,7 +50,7 @@ public class AddingPanel extends JPanel {
     Matrix a;
     Vector b;
 
-    public AddingPanel(WindowFrame p) {
+    public AddingPanel(Window p) {
         parent = p;
         initComponents();
     }
@@ -82,25 +83,7 @@ public class AddingPanel extends JPanel {
         return cp.getX()+ cp.getWidth()+wm ;
     }
 
-    protected void setFocus (boolean f) {
-        tfX1.setFocusable(f);
-        tfX2.setFocusable(f);
-        tfX3.setFocusable(f);
-        tfFileAdress.setFocusable(f);
-        cbEqType.setFocusable(f);
-        tfSumValue.setFocusable(f);
-        
-        ta.setFocusable(f);
-
-        btnLoadFile.setFocusable(f);
-        btnNextA.setFocusable(f);
-        btnAddEq.setFocusable(f);
-        btnStart.setFocusable(f);
-
-        sp.setFocusable(f);
-        subPanel.setFocusable(f);
-    }
-
+    //<editor-fold defaultstate="collapsed" desc=" fillComponents">
     public void fillComponents(){
         addMouseListener();
 
@@ -132,7 +115,6 @@ public class AddingPanel extends JPanel {
         add(lblx3);
 
         cbEqType.setBounds(nextWidth(lblx3), tfX3.getY(), 2*lblXWidth, high);
-        cbEqType.addItem("=");
         cbEqType.addItem("<");
         cbEqType.addItem(">");
         add(cbEqType);
@@ -165,9 +147,8 @@ public class AddingPanel extends JPanel {
         add(btnStart);
         setBackground(Color.white);
     }
+    //</editor-fold>
     
-
-
     private void addMouseListener(){
         ml= new MouseListener() {
 
@@ -202,14 +183,19 @@ public class AddingPanel extends JPanel {
         iv.setNextSystem();
     }
     private void startClicked(){
-        parent.toggleFocusable();
         if( eqList.isEmpty() ){
-            iv.setSystemFromFile(file.getAbsolutePath());
+            if (file!=null)
+                iv.setSystemFromFile(file.getAbsolutePath());
          }else{
             setAand_bFromEqList();
             iv.setSystem(a, b);
+            a.printMatrix();
          }
-         Main.getManager().start();
+        Polyhedron p = iv.vertexFind();
+        p.print();
+        Main.getManager().setVertex(p);
+        parent.addDrawingPanel();
+        Main.getManager().start();
     }
     private void loadFileClicked(){
          //throw new UnsupportedOperationException("DOPISZ tę metodę !!  - Not supported yet.");
@@ -225,7 +211,7 @@ public class AddingPanel extends JPanel {
     }
     private void addEqClicked(){
         double x1,x2,x3,sum;
-        String eq="=";
+        char eq='=';
         if(null==tfX1.getText() || "".equals(tfX1.getText()) )
             x1=0;
         if( null==tfX2.getText() || "".equals(tfX2.getText()) )
@@ -259,20 +245,14 @@ public class AddingPanel extends JPanel {
             return;
 
         if(cbEqType.getSelectedIndex()!=-1){
-            if(cbEqType.getSelectedIndex()==1)
-                eq="<";
-            else if (cbEqType.getSelectedIndex() == 2)
-                eq=">";
-            else{
-                eq="=";
-            }
+            if(cbEqType.getSelectedIndex()==0) eq='<';
+            if (cbEqType.getSelectedIndex() == 1) eq='>';
         }
         try{
-            if(addToEqList(new Equation(x1, x2, x3, eq.charAt(0), sum))){
+            if(addToEqList(new Equation(x1, x2, x3, eq, sum))){
                  ta.setText(ta.getText()+x1+" x1 "+ (x2>=0?"+"+x2:x2)+" x2 "+(x3>=0?"+"+x3:x3)+" x3 "+eq+" "+sum+"\n" );
             }
-        }catch(Exception e){
-        }
+        }catch(Exception e){ }
        tfX1.setText(""); tfX2.setText(""); tfX3.setText(""); tfSumValue.setText("");
 
         System.out.println("glugost listy: "+eqList.size());
@@ -281,10 +261,8 @@ public class AddingPanel extends JPanel {
     private boolean addToEqList(Equation eq){
 //        if(eq.getX1()==0 && eq.getX2() == 0 && eq.getX3() == 0)
 //            return false;
-        for (Equation e : eqList){
-            if(eq.equals(e, eq))
-                return false;
-        }
+        if (eqList.contains(eq))
+            return false;
         eqList.add(eq);
         tfFileAdress.setText("");
         return true;
@@ -301,30 +279,30 @@ public class AddingPanel extends JPanel {
             a.setElement(i, 2, eqList.get(i).getX3());
             b.setElement(i,eqList.get(i).getSum() );
         }
-        //return ;
     }
 
 
-    class Equation{
+    class Equation  {
         private double x1 = 0;
         private double x2 = 0;
         private double x3 = 0;
         private double sum = 0;
-        private int sign;
+        private char sign;
 
-        public Equation(double x1_,double x2_,double x3_,char sign_,double sum_) throws Exception{
+        public Equation(double x1_,double x2_,double x3_, char sign_,double sum_) throws Exception{
             int wsp=1;
             if(x1_ == 0 && x2_ == 0 && x3_ == 0)
                 throw new Exception ("nie poprawne dane");
-            if( sign == '>' ){
+            if( sign_ == '>' ){
                 wsp=-1;
-                sign='<';
+                sign_='<';
             }
             x1=x1_*wsp;
             x2=x2_*wsp;
             x3=x3_*wsp;
             sum = sum_*wsp;
-            //sign=sign_;
+            System.out.println(x1+" "+x2+" "+x3+" "+sum);
+            sign=sign_;
         }
 
          Equation  normalize(Equation e) {
@@ -353,9 +331,34 @@ public class AddingPanel extends JPanel {
              return false;
          }
 
+        @Override
+        public boolean equals (Object o) {
+            if (o == null) return false;
+            if (getClass() != o.getClass()) return false;
+            
+            final Equation e = (Equation) o;
+            if ( this.x1==e.getX1()
+                    &&  this.x2 == e.getX3()
+                    &&  this.x3 == e.getX3()
+                    &&  this.sum == e.getSum()
+                    &&  this.sign == e.getSign())
+                return true;
+            else
+                return false;
+        }
 
+        @Override
+        public int hashCode() {
+            int hash = 7;
+            hash = 59 * hash + (int) (Double.doubleToLongBits(this.x1) ^ (Double.doubleToLongBits(this.x1) >>> 32));
+            hash = 59 * hash + (int) (Double.doubleToLongBits(this.x2) ^ (Double.doubleToLongBits(this.x2) >>> 32));
+            hash = 59 * hash + (int) (Double.doubleToLongBits(this.x3) ^ (Double.doubleToLongBits(this.x3) >>> 32));
+            hash = 59 * hash + (int) (Double.doubleToLongBits(this.sum) ^ (Double.doubleToLongBits(this.sum) >>> 32));
+            hash = 59 * hash + this.sign;
+            return hash;
+        }
 
-        double getX1(){
+         double getX1(){
             return x1;
         }
 
@@ -418,10 +421,9 @@ public class AddingPanel extends JPanel {
         /**
          * @param sign the sign to set
          */
-        private void setSign(int sign) {
+        private void setSign(char sign) {
             this.sign = sign;
         }
-
     }
 
 }

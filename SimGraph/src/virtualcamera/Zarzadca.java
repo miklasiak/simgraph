@@ -109,9 +109,13 @@ public class Zarzadca implements IManagement {
     }
 
     public void start() {
-        if (T==null) T = new Matrix(4,4,'I');
-        if (R==null) R = new Matrix(4,4,'I');
+        if (gui==null)
+            throw new java.lang.IllegalStateException("najpierw daj interfejsy");
+
+        M.makeMeI();
         timer.scheduleAtFixedRate(new MyTimerTask(), 0, 50);
+        xd = gui.getPanelWidth()/2;
+        zd = gui.getPanelHeight()/2;
     }
 
     //<editor-fold defaultstate="collapsed" desc=" getters">
@@ -148,8 +152,6 @@ public class Zarzadca implements IManagement {
 
     public void setGuiInterface (IGui ig) {
         gui = ig;
-        xd = gui.getPanelWidth()/2;
-        zd = gui.getPanelHeight()/2;
     }
     //</editor-fold>
 

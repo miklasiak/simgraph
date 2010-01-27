@@ -1,61 +1,25 @@
 package gui;
-import java.awt.event.*;
-import virtualcamera.*;
+
+import java.awt.event.*;;
+import virtualcamera.IMovement;
+
 /**
- * Ta klasa odpowiada za GUI programu. Program wywołuje konstruktor tej klasy
- * by stworzyć okno. Żeby przemalować scenę wystarczy wywołać reload().
+ *
  * @author alebar
  */
-public class GUI implements KeyListener, IGui {
-    private DrawingPanel panel;
-    private WindowFrame frame;
-    private final int PANEL_HEIGHT = 500;
-    private final int PANEL_WIDTH = 500;
-
+public class MovingScene implements KeyListener, MouseMotionListener {
     private IMovement ster;
-    private IManagement zarzadca;
+    private Window frame;
 
-    public GUI () { }
-
-    public GUI ( IMovement im, IManagement z ) {
+    public MovingScene (IMovement im, Window f) {
         ster = im;
-        zarzadca = z;
+        frame = f;
     }
 
-    public void setIMovementInterface (IMovement im) {
-        ster = im;
-    }
-
-    public void setIManagementInterface (IManagement z) {
-        zarzadca = z;
-    }
-
-    public void show () {
-        if (ster==null || zarzadca==null)
-            throw new java.lang.IllegalStateException("najpierw ustaw interfejsy");
-        panel = new DrawingPanel(PANEL_HEIGHT, PANEL_WIDTH, zarzadca);
-        frame = new WindowFrame(panel, this);
-        frame.setVisible(true);
-    }
-
-    /**
-     * Wywołaj tę funkcję, żeby przemalować scenę.
-     */
-    public void reload () {
-        panel.repaint();
-    }
-    
-    public int getPanelWidth () {
-        return this.PANEL_WIDTH;
-    }
-
-    public int getPanelHeight () {
-        return this.PANEL_HEIGHT;
-    }
-    
     public void keyTyped(KeyEvent e) { }
 
     public void keyPressed(KeyEvent e) {
+        System.out.println(e.getKeyChar());
         // movement
         if (e.getKeyChar() == 'w' || e.getKeyChar() == 'W')
             ster.moveForward();
@@ -84,7 +48,7 @@ public class GUI implements KeyListener, IGui {
         if (e.getKeyCode() == 'E' || e.getKeyCode() == 'e')
             ster.rotateYRight();
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
-            frame.toggleFocusable();
+            frame.mouseRelease();
 
         // zoom
         if (e.getKeyChar() == ']')
@@ -94,5 +58,13 @@ public class GUI implements KeyListener, IGui {
     }
 
     public void keyReleased(KeyEvent e) { }
+
+    public void mouseDragged(MouseEvent e) {
+        System.out.println("dragged");
+    }
+
+    public void mouseMoved(MouseEvent e) {
+        System.out.println("moved");
+    }
 
 }
