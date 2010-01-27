@@ -13,5 +13,5 @@ public interface IGui {
     public int getPanelHeight ();
     public void setIMovementInterface (IMovement im);
     public void setIManagementInterface (IManagement z);
-    public void show();
+    public void start();
 }
