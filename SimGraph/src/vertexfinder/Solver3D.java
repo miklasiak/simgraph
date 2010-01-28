@@ -56,7 +56,30 @@ public class Solver3D implements IVertex {
      */
     public void setNextSystem(){
         if(alreadyReaded && reader.hasNextA() && reader.hasNexb())
-            setSystem(reader.getNextA(), reader.getNextb());
+            setSystem(addNaturalEncloseA(reader.getNextA()), addNaturalEnclose_b( reader.getNextb() ) );
+    }
+    private Matrix addNaturalEncloseA(Matrix a){
+        Matrix tmp;
+        if(a.getNumOfRows()<1 | a.getNumOfcolumns()<1)
+            return null;
+        tmp=new Matrix(a.getNumOfRows()+3, a.getNumOfcolumns());
+        for(int i=0;i<a.getNumOfRows();i++)
+            for(int j=0; j<a.getNumOfcolumns();j++)
+                tmp.setElement(i, j, a.getElement(i, j));
+        for(int i=a.getNumOfRows();i<tmp.getNumOfRows();i++)
+            for(int j=0; j<tmp.getNumOfcolumns();j++)
+                tmp.setElement(i, j, (i-a.getNumOfRows())==j ? -1 : 0);
+        return tmp;
+    }
+    private Vector addNaturalEnclose_b(Vector b_){
+        Vector tmp;
+        if( b_.getSize()<1)
+            return null;
+        tmp = new Vector(b_.getSize()+3);
+        tmp.setElement(b_.getSize(), 0);
+        tmp.setElement(b_.getSize()+1, 0);
+        tmp.setElement(b_.getSize()+2, 0);
+                return tmp;
     }
 
     public Polyhedron vertexFind() {
