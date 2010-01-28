@@ -16,7 +16,6 @@ import virtualcamera.IMovement;
 public class Window extends JFrame implements IGui {
     private IMovement move;
     private IManagement zarzadca;
-    private IVertex vertex;
 
     private AddingPanel addingPanel;
     private MovingScene movingListener;
@@ -37,6 +36,7 @@ public class Window extends JFrame implements IGui {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocation(X_WINDOW_LOCATION, Y_WINDOW_LOCATION);
         this.setPreferredSize(new Dimension(320, 500));
+        this.setTitle("SimGraph");
 
         this.addComponents();
     }
@@ -53,6 +53,7 @@ public class Window extends JFrame implements IGui {
         drawingPanel = new DrawingPanel(PANEL_HEIGHT, PANEL_WIDTH, zarzadca);
         drawingPanel.addKeyListener(movingListener);
         drawingPanel.addMouseMotionListener(movingListener);
+        drawingPanel.addMouseListener(movingListener);
 
         pane.removeAll();
         pane.add(drawingPanel);

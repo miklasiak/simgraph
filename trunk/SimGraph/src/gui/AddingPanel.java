@@ -190,23 +190,24 @@ public class AddingPanel extends JPanel {
 //        iv.setNextSystem();
 //    }
     private void startClicked(){
+        boolean ok;
         if( eqList.size()<=3 ){
             if (file!=null) {
                 iv.setSystemFromFile(file.getAbsolutePath());
-                if(file.exists())
-                System.out.println("isnitnieje plik "+file.getAbsolutePath());
+                ok = true;
             }
-         }else{
+            ok = false;
+         } else {
             setAand_bFromEqList();
             iv.setSystem(a, b);
-            //System.out.println("Eq nie pusty!!"+file.getAbsolutePath());
-         }
-        Polyhedron p = iv.vertexFind();
-        p.print();
-        Main.getManager().setVertex(p);
-        parent.addDrawingPanel();
-        
-        Main.getManager().start();
+            ok = true;
+        }
+        if (ok) {
+            Polyhedron p = iv.vertexFind();
+            Main.getManager().setVertex(p);
+            parent.addDrawingPanel();
+            Main.getManager().start();
+        }
     }
     private void loadFileClicked(){
          //throw new UnsupportedOperationException("DOPISZ tę metodę !!  - Not supported yet.");

@@ -36,6 +36,11 @@ public class Ruch3D implements IMovement {
     }
 
     //<editor-fold defaultstate="collapsed" desc=" move">
+    public void dragMove(int dx, int dy) {
+        T.setElement(0, 3, T.getElement(0, 3)+dx);
+        T.setElement(2, 3, T.getElement(2, 3)-dy);
+        zarzadca.setChanged();
+    }
 
     public void moveForward() {
         double krok = T.getElement(1, 3);
