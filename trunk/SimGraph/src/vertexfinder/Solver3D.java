@@ -1,6 +1,8 @@
 package vertexfinder;
-import file.IData;
-import file.MyReader;
+// file.IData;
+import file.IEqRead;
+import file.MyEqalReader;
+//import file.MyReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import math.*;
@@ -17,12 +19,12 @@ public class Solver3D implements IVertex {
     Vector              b;
     int                 m;      // liczba nierownosci (plaszczyzn)
     int                 n;      // wymiar przestrzeni
-    IData           reader;
-    boolean alreadyReaded=false;
+    IEqRead           reader;
+    //boolean alreadyReaded=false;
 
     public Solver3D () {
         n = 3;
-        reader = new MyReader();
+        reader = new MyEqalReader();
     }
 
     public void setSystem(Matrix mA, Vector vb) {
@@ -44,20 +46,25 @@ public class Solver3D implements IVertex {
     public void setSystemFromFile(String filename) {
             try{
                 reader.readFile(filename);
-                alreadyReaded = true;
+                //alreadyReaded = true;
             }catch(IOException ioe){
-                alreadyReaded = false;
+              //  alreadyReaded = false;
                 return;
             }
-            setNextSystem();
+            reader.getb().print();
+             System.out.println("POOOO   reader.getb !!! ");
+            addNaturalEncloseA(reader.getA()).printMatrix();
+             addNaturalEnclose_b( reader.getb() ).print();
+            setSystem(addNaturalEncloseA( reader.getA() ), addNaturalEnclose_b( reader.getb() ) );
+            //setNextSystem();
     }
     /**
      * jeśli przeczytano macierze z pliku to tą metodą przechodzimy do następnej przeczytanej macierzy
      */
-    public void setNextSystem(){
-        if(alreadyReaded && reader.hasNextA() && reader.hasNexb())
-            setSystem(addNaturalEncloseA(reader.getNextA()), addNaturalEnclose_b( reader.getNextb() ) );
-    }
+//    public void setNextSystem(){
+//        if(alreadyReaded && reader.hasNextA() && reader.hasNexb())
+//            setSystem(addNaturalEncloseA(reader.getNextA()), addNaturalEnclose_b( reader.getNextb() ) );
+//    }
     private Matrix addNaturalEncloseA(Matrix a){
         Matrix tmp;
         if(a.getNumOfRows()<1 | a.getNumOfcolumns()<1)
@@ -76,6 +83,9 @@ public class Solver3D implements IVertex {
         if( b_.getSize()<1)
             return null;
         tmp = new Vector(b_.getSize()+3);
+        for (int i=0; i<b_.getSize(); i++){
+            tmp.setElement(i, b_.getElement(i));
+        }
         tmp.setElement(b_.getSize(), 0);
         tmp.setElement(b_.getSize()+1, 0);
         tmp.setElement(b_.getSize()+2, 0);
