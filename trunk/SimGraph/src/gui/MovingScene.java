@@ -19,7 +19,7 @@ public class MovingScene implements KeyListener, MouseMotionListener {
     public void keyTyped(KeyEvent e) { }
 
     public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyChar());
+        //System.out.println(e.getKeyChar());
         // movement
         if (e.getKeyChar() == 'w' || e.getKeyChar() == 'W')
             ster.moveForward();
@@ -60,11 +60,11 @@ public class MovingScene implements KeyListener, MouseMotionListener {
     public void keyReleased(KeyEvent e) { }
 
     public void mouseDragged(MouseEvent e) {
-        System.out.println("dragged");
+        //System.out.println("dragged");
     }
 
     public void mouseMoved(MouseEvent e) {
-        System.out.println("moved");
+        //System.out.println("moved");
     }
 
 }
