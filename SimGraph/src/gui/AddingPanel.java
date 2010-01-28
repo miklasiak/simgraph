@@ -74,6 +74,12 @@ public class AddingPanel extends JPanel {
         btnAddEq = new JButton("Dodaj ogranicznenie");
         btnStart = new JButton("Start");
         eqList = new ArrayList<Equation>();
+        try{
+            eqList.add(new Equation(1, 0, 0, '>', 0)) ;
+            eqList.add(new Equation(0, 1, 0, '>', 0)) ;
+            eqList.add(new Equation(0, 0, 1, '>', 0)) ;
+         }catch(Exception ex){
+         }
         iv= Main.getVertex();
     }
     private int nextHeight(Component cp){
@@ -205,6 +211,14 @@ public class AddingPanel extends JPanel {
              file = fc.getSelectedFile();
              tfFileAdress.setText(file.getAbsolutePath());
              eqList.clear();
+             try{
+                eqList.add(new Equation(1, 0, 0, '>', 0)) ;
+                eqList.add(new Equation(0, 1, 0, '>', 0)) ;
+                eqList.add(new Equation(0, 0, 1, '>', 0)) ;
+             }catch(Exception ex){
+
+             }
+
              ta.setText("");
 
         }
