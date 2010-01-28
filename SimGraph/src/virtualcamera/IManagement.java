@@ -12,5 +12,7 @@ public interface IManagement {
     public void start();
     public ArrayList<Polygon> getRysowanyObiekt();
     public ArrayList<Polygon> getOsie();
+    public boolean przeslaniacSciany();
+    public void togglePrzeslanianieScian();
     public void setGuiInterface(IGui gui);
 }

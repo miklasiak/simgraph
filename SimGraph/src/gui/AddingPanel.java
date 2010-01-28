@@ -195,7 +195,6 @@ public class AddingPanel extends JPanel {
          }else{
             setAand_bFromEqList();
             iv.setSystem(a, b);
-            a.printMatrix();
          }
         Polyhedron p = iv.vertexFind();
         p.print();
@@ -315,8 +314,11 @@ public class AddingPanel extends JPanel {
             x2=x2_*wsp;
             x3=x3_*wsp;
             sum = sum_*wsp;
-            System.out.println(x1+" "+x2+" "+x3+" "+sum);
             sign=sign_;
+        }
+
+        public void print () {
+            System.out.println(x1+" "+x2+" "+x3+" "+sum);
         }
 
          Equation  normalize(Equation e) {

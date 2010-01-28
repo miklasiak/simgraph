@@ -1,6 +1,7 @@
 package geom;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import math.Matrix;
@@ -43,13 +44,15 @@ public class Polyhedron implements Iterable {
 
     public static Polyhedron multiplyPoints (Polyhedron polyhedron, Matrix M) {
         ArrayList<Polygon3D> listaPolygonow = new ArrayList<Polygon3D>();
-        Polygon3D newpoly;
+        Polygon3D newpoly, wall;
         Point3D newpoint;
-        for (Object wall : polyhedron) {
+        for (Object w : polyhedron) {
+            wall = (Polygon3D) w;
             newpoly = new Polygon3D();
-            for (Object point : (Polygon3D) wall) {
+            if (wall.getSrodekCiezkosci()!=null)
+                newpoly.setSrodekCiezkosci( Point3D.multiply(wall.getSrodekCiezkosci(), M) );
+            for (Object point : wall) {
                 newpoint = Point3D.multiply((Point3D) point, M);
-                newpoint.normalize();
                 newpoly.addPoint(newpoint);
             }
             listaPolygonow.add(newpoly);
@@ -60,10 +63,29 @@ public class Polyhedron implements Iterable {
     public void multiplyPoints (Matrix M) {
         Point3D point;
         for (Polygon3D wall : walls) {
+            wall.getSrodekCiezkosci().multiply(M);
             for (Object o : wall) {
                 point = (Point3D) o;
                 point.multiply(M);
             }
+        }
+    }
+
+    /**
+     * Sortuje ściany względem odległości ich środków ciężkości od punktu p0.
+     * W algorytmie malarza punktem p0 będzie punkt położenia kamery.
+     * @param p0
+     */
+    public void sortWalls (Point3D camPos) {
+        for (Polygon3D wall : walls ) {
+            wall.obliczOdlegloscOdKamery(camPos);
+        }
+        Collections.sort(walls);
+    }
+
+    public void wyznaczSrodkiCiezkosciScian () {
+        for (Polygon3D p : walls) {
+            p.wyznaczSrodekCiezkosci();
         }
     }
 
