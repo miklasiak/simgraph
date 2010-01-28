@@ -1,17 +1,19 @@
 package gui;
 
-import java.awt.event.*;import virtualcamera.IManagement;
-;
+import java.awt.event.*;import javax.swing.event.MouseInputAdapter;
+import virtualcamera.IManagement;
 import virtualcamera.IMovement;
 
 /**
  *
  * @author alebar
  */
-public class MovingScene implements KeyListener, MouseMotionListener {
+public class MovingScene extends MouseInputAdapter implements KeyListener  {
     private IMovement ster;
     private IManagement zarzadca;
     private Window frame;
+    int x, y, dx, dy;
+    private boolean rightButton;
 
     public MovingScene (IMovement im, IManagement z, Window f) {
         ster = im;
@@ -66,12 +68,23 @@ public class MovingScene implements KeyListener, MouseMotionListener {
 
     public void keyReleased(KeyEvent e) { }
 
-    public void mouseDragged(MouseEvent e) {
-        //System.out.println("dragged");
+    @Override
+    public void mousePressed(MouseEvent e) {
+        x = e.getX();
+        y = e.getY();
     }
 
-    public void mouseMoved(MouseEvent e) {
-        //System.out.println("moved");
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        dx = (e.getX()-x);
+        dy = (e.getY()-y);
+        ster.dragMove(dx, dy);
+        x = e.getX();
+        y = e.getY();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
     }
 
 }

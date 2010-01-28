@@ -5,6 +5,7 @@ package virtualcamera;
  * @author alebar
  */
 public interface IMovement {
+    public void dragMove(int dx, int dy);
     public void moveForward();
     public void moveBack();
     public void moveLeft();
