@@ -30,7 +30,6 @@ public class Main {
 //        double [] b_tab = { 100, 0, 100, 0, 100, 0, 100 };
 //        Matrix A = new Matrix (a);
 //        Vector b = new Vector(b_tab);
-//        ver = new Solver3D();
 //        ver.setSystem(A, b);
 //        getManager().setVertex(ver.vertexFind());
         IGui gui = new Window(move,getManager());

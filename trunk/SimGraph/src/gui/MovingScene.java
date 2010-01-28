@@ -1,6 +1,7 @@
 package gui;
 
-import java.awt.event.*;;
+import java.awt.event.*;import virtualcamera.IManagement;
+;
 import virtualcamera.IMovement;
 
 /**
@@ -9,10 +10,12 @@ import virtualcamera.IMovement;
  */
 public class MovingScene implements KeyListener, MouseMotionListener {
     private IMovement ster;
+    private IManagement zarzadca;
     private Window frame;
 
-    public MovingScene (IMovement im, Window f) {
+    public MovingScene (IMovement im, IManagement z, Window f) {
         ster = im;
+        zarzadca = z;
         frame = f;
     }
 
@@ -55,6 +58,10 @@ public class MovingScene implements KeyListener, MouseMotionListener {
             ster.zoomIn();
         if (e.getKeyChar() == '[')
             ster.zoomOut();
+
+        // toggle przeslanianie
+        if (e.getKeyChar() == 'p')
+            zarzadca.togglePrzeslanianieScian();
     }
 
     public void keyReleased(KeyEvent e) { }

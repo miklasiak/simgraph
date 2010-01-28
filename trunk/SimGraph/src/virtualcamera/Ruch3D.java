@@ -8,9 +8,8 @@ import math.*;
 public class Ruch3D implements IMovement {
 
     private double tStep = 5.0;                   // krok przesuniecia w translacji
-    private double dStep = 10.0;                    // krok przesuniecia ogniskowej
+    private double dStep = 1.0;                    // krok przesuniecia ogniskowej
     private double rStep = 0.1;                     // jednostka obrotu
-    private Double[] v;                             // wektor translacji
     private Matrix T = new Matrix(4,4,'I');         // macierz translacji
     private Matrix R = new Matrix(4,4,'I');         // zbiorowa macierz obrotu
     private Matrix rXdown = new Matrix(4,4,'I');    // macierz obrotu wokol OX w dol
@@ -21,12 +20,13 @@ public class Ruch3D implements IMovement {
     private Matrix rZleft = new Matrix(4,4,'I');    // macierz obrotu wokol OZ w lewo
 
     private Zarzadca zarzadca;
-
+    private Camera cam;
 
     public Ruch3D (IManagement z) {
         zarzadca = (Zarzadca) z;
         zarzadca.setMatrixes(T, R);
-        double cam_y = zarzadca.getCameraY();
+        cam = zarzadca.getCamera();
+        double cam_y = cam.getY();
         rXdown  = Ruch3D.makeRotationXMatrix(rStep, cam_y);
         rXup    = Ruch3D.makeRotationXMatrix(-rStep, cam_y);
         rYright = Ruch3D.makeRotationYMatrix(-rStep);
@@ -106,11 +106,13 @@ public class Ruch3D implements IMovement {
 
     //<editor-fold defaultstate="collapsed" desc=" zoomIn/Out">
     public void zoomIn() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        cam.setVPD(cam.getVPD()+dStep);
+        zarzadca.setChanged();
     }
 
     public void zoomOut() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        cam.setVPD(cam.getVPD()-dStep);
+        zarzadca.setChanged();
     }
     //</editor-fold>
 

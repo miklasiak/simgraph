@@ -20,6 +20,7 @@ public class Zarzadca implements IManagement {
     private Osie osie;
     private ArrayList<Polygon> zrzutowane, zrzutowaneOsie;
 
+    private boolean przeslanianieScian = true;
 
     private IGui gui;
 
@@ -28,12 +29,14 @@ public class Zarzadca implements IManagement {
     private Matrix M = new Matrix (4,4,'I');
 
     private Camera cam;
+    private Point3D camPos;
     private int xd, zd;
     private Timer timer;
     private boolean changed = false;
 
     public Zarzadca () {
         cam = new Camera( 300.0, 0.0);
+        camPos = new Point3D (0, cam.getY(), 0);
         timer = new Timer();
         zrzutowane = new ArrayList<Polygon>();
         osie = new Osie();
@@ -123,12 +126,12 @@ public class Zarzadca implements IManagement {
         return zrzutowane;
     }
 
-    public ArrayList<Polygon> getOsie() {
-        return zrzutowaneOsie;
+    protected Camera getCamera () {
+        return this.cam;
     }
 
-    protected double getCameraY() {
-        return cam.getY();
+    public ArrayList<Polygon> getOsie() {
+        return zrzutowaneOsie;
     }
     //</editor-fold>
     
@@ -146,6 +149,9 @@ public class Zarzadca implements IManagement {
 
     public void setVertex(Polyhedron p) {
         wieloscian = p;
+        wieloscian.wyznaczSrodkiCiezkosciScian();
+        if (przeslanianieScian)
+            wieloscian.sortWalls( camPos );
         zrzutowane = rzutuj( wieloscian );
         zrzutowaneOsie = rzutuj( osie );
     }
@@ -154,17 +160,30 @@ public class Zarzadca implements IManagement {
         gui = ig;
     }
     //</editor-fold>
+    
+    public void togglePrzeslanianieScian () {
+        przeslanianieScian = !przeslanianieScian;
+        changed = true;
+    }
 
+    public boolean przeslaniacSciany() {
+        return this.przeslanianieScian;
+    }
     private class MyTimerTask extends TimerTask {
+        private Polyhedron p;
 
         @Override
         public void run() {
             if (changed) {
                 M.multiple(R);
                 M.multiple(T);
-                
+
                 zrzutowaneOsie = rzutuj( Polyhedron.multiplyPoints(osie, M) );
-                zrzutowane = rzutuj( Polyhedron.multiplyPoints(wieloscian, M) );
+
+                p = Polyhedron.multiplyPoints(wieloscian, M);
+                if (przeslanianieScian)
+                    p.sortWalls( camPos );
+                zrzutowane = rzutuj( p );
                 
                 T.makeMeI();
                 R.makeMeI();

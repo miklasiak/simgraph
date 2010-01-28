@@ -50,6 +50,7 @@ public class Point3D extends Vector {
             }
         }
         this.setTab(tmp);
+        this.normalize();
     }
     
     public static Point3D multiply (Point3D p, Matrix M) {
@@ -61,7 +62,25 @@ public class Point3D extends Vector {
                 x.setElement(w, x.getElement(w)+m[w][k]*p.getElement(k));
             }
         }
+        x.normalize();
         return x;
+    }
+
+    public Point3D copy () {
+        return new Point3D( this.getX(), this.getY(), this.getZ() );
+    }
+
+    /**
+     * odl = ( (x1-x2)^2 + (y1-y2)^2 + (z1-z2)^2 )^-1
+     * @param a
+     * @param b
+     * @return
+     */
+    public static double odleglosc (Point3D a, Point3D b) {
+        return Math.sqrt(
+                    Math.pow(a.getX() - b.getX(), 2)
+                +   Math.pow(a.getY() - b.getZ(), 2)
+                +   Math.pow(a.getZ() - b.getZ(), 2));
     }
 
     /**

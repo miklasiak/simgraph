@@ -48,14 +48,6 @@ public class DrawingPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // show obiekt
-        polygons = zarzadca.getRysowanyObiekt();
-        for (Polygon p : polygons) {
-            g.setColor(Color.lightGray);
-            g.fillPolygon(p);
-            g.setColor(Color.white);
-            g.drawPolygon(p);
-        }
         // show osie
         polygons = zarzadca.getOsie();
         i = 0;
@@ -63,6 +55,16 @@ public class DrawingPanel extends JPanel {
             g.setColor(c[i]);
             g.drawPolygon(p);
             i++;
+        }
+        // show obiekt
+        polygons = zarzadca.getRysowanyObiekt();
+        for (i = polygons.size()-1; i>=0; i--) {
+            if (zarzadca.przeslaniacSciany()) {
+                g.setColor(Color.lightGray);
+                g.fillPolygon(polygons.get(i));
+            }
+            g.setColor(Color.white);
+            g.drawPolygon(polygons.get(i));
         }
     }
 

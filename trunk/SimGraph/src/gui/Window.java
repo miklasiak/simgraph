@@ -31,7 +31,7 @@ public class Window extends JFrame implements IGui {
     public Window (IMovement im, IManagement z) {
         this.move = im;
         this.zarzadca = z;
-        this.movingListener = new MovingScene(move, this);
+        this.movingListener = new MovingScene(move, zarzadca, this);
 
         pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
