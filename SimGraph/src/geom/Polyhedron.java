@@ -74,7 +74,7 @@ public class Polyhedron implements Iterable {
     /**
      * Sortuje ściany względem odległości ich środków ciężkości od punktu p0.
      * W algorytmie malarza punktem p0 będzie punkt położenia kamery.
-     * @param p0
+     * @param camPos
      */
     public void sortWalls (Point3D camPos) {
         for (Polygon3D wall : walls ) {
