@@ -33,7 +33,7 @@ import mainp.Main;
 public class AddingPanel extends JPanel {
 
     MouseListener ml;
-    JButton btnLoadFile,btnStart,btnAddEq,btnNextA;
+    JButton btnLoadFile,btnStart,btnAddEq;//,btnNextA;
     JTextField tfX1,tfX2,tfX3,tfSumValue,tfFileAdress;
     JComboBox cbEqType;
     JLabel lblx1,lblx2,lblx3;
@@ -59,7 +59,7 @@ public class AddingPanel extends JPanel {
         setBackground(Color.white);
         tfFileAdress=new JTextField();
         btnLoadFile=new JButton("wczytaj plik");
-        btnNextA = new JButton(">");
+        //btnNextA = new JButton(">");
         tfX1=new JTextField("");
         tfX2=new JTextField("");
         tfX3=new JTextField("");
@@ -101,9 +101,9 @@ public class AddingPanel extends JPanel {
         btnLoadFile.addMouseListener(ml);
         add(btnLoadFile);
 
-        btnNextA.setBounds(nextWidth(btnLoadFile),btnLoadFile.getY() , (int)(widthOfBtns/2), high);
-        btnNextA.addMouseListener(ml);
-        add(btnNextA);
+//        btnNextA.setBounds(nextWidth(btnLoadFile),btnLoadFile.getY() , (int)(widthOfBtns/2), high);
+//        btnNextA.addMouseListener(ml);
+//        add(btnNextA);
 
         tfX1.setBounds(leftMargin, nextHeight(btnLoadFile), tfXWidth, high);
         add(tfX1);
@@ -165,9 +165,10 @@ public class AddingPanel extends JPanel {
                     loadFileClicked();
                 }else if(e.getSource() == btnAddEq){
                     addEqClicked();
-                }else if(e.getSource() == btnNextA){
-                    btnNextAClicked();
                 }
+//                else if(e.getSource() == btnNextA){
+//                    //btnNextAClicked();
+//                }
             }
 
             public void mousePressed(MouseEvent e) {
@@ -185,16 +186,19 @@ public class AddingPanel extends JPanel {
         };
     }
 
-    private void btnNextAClicked(){
-        iv.setNextSystem();
-    }
+//    private void btnNextAClicked(){
+//        iv.setNextSystem();
+//    }
     private void startClicked(){
-        if( eqList.isEmpty() ){
+        if( eqList.size()<=3 ){
             if (file!=null)
                 iv.setSystemFromFile(file.getAbsolutePath());
+            if(file.exists())
+            System.out.println("isnitnieje plik "+file.getAbsolutePath());
          }else{
             setAand_bFromEqList();
             iv.setSystem(a, b);
+            //System.out.println("Eq nie pusty!!"+file.getAbsolutePath());
          }
         Polyhedron p = iv.vertexFind();
         p.print();

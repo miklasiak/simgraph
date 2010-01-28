@@ -13,7 +13,7 @@ import math.Vector;
  *
  * @author kamil
  */
-public interface IData {
+public interface IData{
 
     /**
      * czyta tablice sumplexów z pliku o podanej ścieżce

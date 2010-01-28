@@ -140,7 +140,7 @@ public class MyEqalReader implements IEqRead{
                         }
                 }
 
-                 System.out.println("tmp: " +tmp);
+                 //System.out.println("tmp: " +tmp);
 
                  // można zrobic na substringach od x do x
             //}
@@ -177,8 +177,8 @@ public class MyEqalReader implements IEqRead{
             b.print();
             System.out.println("");
     }
-    public static void main(String args[]){
-        MyEqalReader meq = new MyEqalReader();
-        meq.testowaFunkcja();
-    }
+//    public static void main(String args[]){
+//        MyEqalReader meq = new MyEqalReader();
+//        meq.testowaFunkcja();
+//    }
 }
