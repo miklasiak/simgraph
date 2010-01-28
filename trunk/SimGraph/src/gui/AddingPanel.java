@@ -191,10 +191,11 @@ public class AddingPanel extends JPanel {
 //    }
     private void startClicked(){
         if( eqList.size()<=3 ){
-            if (file!=null)
+            if (file!=null) {
                 iv.setSystemFromFile(file.getAbsolutePath());
-            if(file.exists())
-            System.out.println("isnitnieje plik "+file.getAbsolutePath());
+                if(file.exists())
+                System.out.println("isnitnieje plik "+file.getAbsolutePath());
+            }
          }else{
             setAand_bFromEqList();
             iv.setSystem(a, b);
@@ -204,6 +205,7 @@ public class AddingPanel extends JPanel {
         p.print();
         Main.getManager().setVertex(p);
         parent.addDrawingPanel();
+        
         Main.getManager().start();
     }
     private void loadFileClicked(){

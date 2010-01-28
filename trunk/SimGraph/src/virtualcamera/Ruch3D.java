@@ -116,6 +116,17 @@ public class Ruch3D implements IMovement {
     }
     //</editor-fold>
 
+    public static Matrix createStartCameraPositionMatrix () {
+        Matrix t = new Matrix(4,4,'I');
+        t.setElement(0, 3, -500);
+        t.setElement(1, 3, -500);
+        t.setElement(2, 3, -50);
+        Matrix m = new Matrix (4,4,'I');
+        m.multiple(t);
+        m.multiple(makeRotationZMatrix(-2.36,0));
+        return m;
+    }
+
     private static Matrix makeRotationXMatrix (double fi, double c) {
         Matrix m = new Matrix(4,4,'I');
         double cos, sin;

@@ -115,7 +115,8 @@ public class Zarzadca implements IManagement {
         if (gui==null)
             throw new java.lang.IllegalStateException("najpierw daj interfejsy");
 
-        M.makeMeI();
+        setChanged();
+        M = Ruch3D.createStartCameraPositionMatrix();
         timer.scheduleAtFixedRate(new MyTimerTask(), 0, 50);
         xd = gui.getPanelWidth()/2;
         zd = gui.getPanelHeight()/2;
@@ -150,9 +151,10 @@ public class Zarzadca implements IManagement {
     public void setVertex(Polyhedron p) {
         wieloscian = p;
         wieloscian.wyznaczSrodkiCiezkosciScian();
+        Polyhedron w = Polyhedron.multiplyPoints(wieloscian, Ruch3D.createStartCameraPositionMatrix());
         if (przeslanianieScian)
-            wieloscian.sortWalls( camPos );
-        zrzutowane = rzutuj( wieloscian );
+            w.sortWalls( camPos );
+        zrzutowane = rzutuj( w );
         zrzutowaneOsie = rzutuj( osie );
     }
 
